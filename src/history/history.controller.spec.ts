@@ -2,6 +2,7 @@ import {Test, TestingModule} from '@nestjs/testing';
 import {HistoryController} from './history.controller';
 import {HistoryService} from "./history.service";
 import {TransactionEntity} from "../model/Transaction.entity";
+import {SpendingsResponseDTO} from "./dto/SpendingsResponse.dto";
 
 describe('History Controller', () => {
     let controller: HistoryController;
@@ -23,16 +24,16 @@ describe('History Controller', () => {
 
     describe('findAll', () => {
         it('should return an array of transactions', async () => {
-            const result = [];
+            const result: SpendingsResponseDTO = {merchants: []};
             jest.spyOn(historyService, 'getTransactionsInRange').mockReturnValue(
-                Promise.resolve(result)
+                Promise.resolve([])
             );
 
             expect(await controller.findAll({
                 userId: 1,
                 from: new Date('12-20-2019'),
                 to: new Date('12-20-2020')
-            })).toStrictEqual([]);
+            })).toStrictEqual(result);
         });
     });
 });

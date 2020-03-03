@@ -9,19 +9,19 @@ export const PERCENTILE_QUERY = "SELECT TE.\"userId\",\n" +
     "         SELECT \"userId\",\n" +
     "                \"merchantId\",\n" +
     "                SUM(amount) total_spent,\n" +
-    "                PERCENT_RANK() OVER (\n" +
+    "                (1- PERCENT_RANK() OVER (\n" +
     "                    PARTITION BY \"merchantId\"\n" +
-    "                    ORDER BY SUM(amount)\n" +
-    "                    )       percent_rank\n" +
-    "FROM \"TransactionEntities\" t\n" +
-    "         where t.\"createdAt\" <:to\n" +
-    "         and t.\"createdAt\" > :from" +
+    "                    ORDER BY SUM(amount) DESC\n" +
+    "                    ))       percent_rank\n" +
+    "         FROM \"TransactionEntities\" t\n" +
+    "         where t.\"createdAt\" > :from\n" +
+    "         and t.\"createdAt\" < :to\n" +
     "         group by \"userId\", \"merchantId\") as TE\n" +
     "         INNER JOIN \"MerchantEntities\" mer ON mer.id = \"merchantId\"\n" +
-    "where \"userId\" = :userId\n" +
-    "  and \"merchantId\" in\n" +
-    "      (SELECT Distinct tr.\"merchantId\"\n" +
+    "where \"merchantId\" in\n" +
+    "      (SELECT Distinct \"tr\".\"merchantId\"\n" +
     "       from \"TransactionEntities\" tr\n" +
-    "       where \"userId\" = :userId\n" +
-    "         and tr.\"createdAt\" < :to\n" +
-    "         and tr.\"createdAt\" > :from);";
+    "       where TE.\"userId\" = :userId\n" +
+    "         and tr.\"createdAt\" > :from\n" +
+    "         and tr.\"createdAt\" < :to)\n" +
+    "  and \"userId\" = :userId;";

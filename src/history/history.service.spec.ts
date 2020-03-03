@@ -6,12 +6,15 @@ import {TransactionEntity} from "../model/Transaction.entity";
 import {DatabaseModule} from "../database/database.module";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import configuration from "../config/configuration";
+import {IMerchantPercentile} from "./dto/SpendingsResponse.dto";
 
 describe('HistoryService', () => {
     let service: HistoryService;
 
-    let sampleMerchant: MerchantEntity;
-    let sampleUser: UserEntity;
+    let sampleMerchant1: MerchantEntity;
+    let sampleMerchant2: MerchantEntity;
+    let sampleUser1: UserEntity;
+    let sampleUser2: UserEntity;
     let sampleTransactions: TransactionEntity[] = [];
 
     beforeAll(async () => {
@@ -26,44 +29,45 @@ describe('HistoryService', () => {
 
 
         // wipes all tables
-        // await TransactionEntity.destroy({truncate: true});
-        // await UserEntity.destroy({cascade: true, truncate: true});
-        // await MerchantEntity.destroy({cascade: true, truncate: true});
+        await TransactionEntity.destroy({truncate: true});
+        await UserEntity.destroy({cascade: true, truncate: true});
+        await MerchantEntity.destroy({cascade: true, truncate: true});
 
 
-        sampleMerchant = await MerchantEntity.create({['display_name']: 'Merchant 1'});
-        sampleUser = await UserEntity.create({firstName: 'User 1', lastName: 'LastName'});
+        sampleMerchant1 = await MerchantEntity.create({['display_name']: 'Merchant 1'});
+        sampleMerchant2 = await MerchantEntity.create({['display_name']: 'Merchant 2'});
+        sampleUser1 = await UserEntity.create({firstName: 'User 1', lastName: 'LastName'});
+        sampleUser2 = await UserEntity.create({firstName: 'User 2', lastName: 'LastName'});
         sampleTransactions = await TransactionEntity.bulkCreate([
             {
-                createdAt: new Date('12-20-2010'),
-                userId: sampleUser.id,
-                merchantId: sampleMerchant.id,
+                userId: sampleUser1.id,
+                merchantId: sampleMerchant1.id,
                 amount: 3000,
                 description: 'Sample Transaction'
             },
             {
-                userId: sampleUser.id,
-                merchantId: sampleMerchant.id,
+                userId: sampleUser1.id,
+                merchantId: sampleMerchant2.id,
                 amount: 3000,
                 description: 'Sample Transaction'
             }, {
-                userId: sampleUser.id,
-                merchantId: sampleMerchant.id,
+                userId: sampleUser1.id,
+                merchantId: sampleMerchant2.id,
                 amount: 3000,
                 description: 'Sample Transaction'
             }, {
-                userId: sampleUser.id,
-                merchantId: sampleMerchant.id,
+                userId: sampleUser2.id,
+                merchantId: sampleMerchant1.id,
                 amount: 3000,
                 description: 'Sample Transaction'
             }, {
-                userId: sampleUser.id,
-                merchantId: sampleMerchant.id,
+                userId: sampleUser2.id,
+                merchantId: sampleMerchant1.id,
                 amount: 3000,
                 description: 'Sample Transaction'
             }, {
-                userId: sampleUser.id,
-                merchantId: sampleMerchant.id,
+                userId: sampleUser2.id,
+                merchantId: sampleMerchant2.id,
                 amount: 3000,
                 description: 'Sample Transaction'
             }]);
@@ -71,8 +75,8 @@ describe('HistoryService', () => {
     });
 
     afterAll(async () => {
-        // await sampleUser.destroy();
-        // await sampleMerchant.destroy();
+        // await sampleUser1.destroy();
+        // await sampleMerchant1.destroy();
 
     });
 
@@ -81,14 +85,13 @@ describe('HistoryService', () => {
     });
 
     it('should fetch all transactions for user give id, from date and to date', async () => {
-        // expect(service).toBeDefined();
-        // const transactions = await service.getTransactionsInRange({
-        //     userId: sampleUser.id,
-        //     from: new Date('12-20-2019'),
-        //     to: new Date('11-20-2020-18:56')
-        // });
-        // console.log(transactions.length);
-        // console.log(sampleTransactions.length);
-        // expect(transactions.length).toBe(5);
+        expect(service).toBeDefined();
+        const percentiles: IMerchantPercentile[] = await service.getTransactionsInRange({
+            userId: sampleUser2.id,
+            from: new Date('12-20-2019'),
+            to: new Date('11-20-2020-18:56')
+        });
+        console.log(percentiles);
+        expect(percentiles.length).toBe(2);
     });
 });

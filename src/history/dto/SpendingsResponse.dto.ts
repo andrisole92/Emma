@@ -17,3 +17,7 @@ export class IMerchantPercentile {
     percent_rank: number;
 }
 
+export class SpendingsResponseDTO {
+    @ApiProperty()
+    merchants: IMerchantPercentile[];
+}

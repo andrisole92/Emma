@@ -2,9 +2,7 @@ import {Controller, Get, Query} from '@nestjs/common';
 import {GetHistoryDTO} from "./dto/GetHistory.dto";
 import {HistoryService} from "./history.service";
 import {ApiResponse, ApiTags} from "@nestjs/swagger";
-import {TransactionEntity} from "../model/Transaction.entity";
-import {SeedService} from "../seed/seed.service";
-import {IMerchantPercentile} from "./dto/HistoryResponse.dto";
+import {IMerchantPercentile, SpendingsResponseDTO} from "./dto/SpendingsResponse.dto";
 
 
 @ApiTags('List')
@@ -18,16 +16,17 @@ export class HistoryController {
 
     @ApiResponse({
         description: 'Transaction array.',
-        type: [IMerchantPercentile],
+        type: SpendingsResponseDTO,
         status: 200
     })
     @Get()
-    async findAll(@Query() query: GetHistoryDTO): Promise<IMerchantPercentile[]> {
+    async findAll(@Query() query: GetHistoryDTO): Promise<SpendingsResponseDTO> {
         try {
-            return await this.historyService.getTransactionsInRange(query);
+            const merchants: IMerchantPercentile[] = await this.historyService.getTransactionsInRange(query);
+            return {merchants}
         } catch (e) {
             console.log(e);
-            return [];
+            return {merchants: []};
         } finally {
 
         }

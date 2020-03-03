@@ -3,7 +3,7 @@ import {GetHistoryDTO} from "./dto/GetHistory.dto";
 import {TransactionEntity} from "../model/Transaction.entity";
 import {QueryTypes} from "sequelize";
 import {PERCENTILE_QUERY} from "../queries";
-import {IMerchantPercentile} from "./dto/HistoryResponse.dto";
+import {IMerchantPercentile} from "./dto/SpendingsResponse.dto";
 
 
 @Injectable()
