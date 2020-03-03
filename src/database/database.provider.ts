@@ -7,10 +7,8 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 
 export const databaseProviders = [
     {
-
         provide: 'SEQUELIZE',
         imports: [ConfigModule],
-
         useFactory: async (configService: ConfigService) => {
             console.log('here', configService);
             const sequelize = new Sequelize({
