@@ -24,6 +24,7 @@ $ npm run start:prod
 ```
 
 ## Test
+(Coverage included in coverage folder)
 
 ```bash
 # unit tests
@@ -35,3 +36,18 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Load Testing
+
+I have also implemented load test in [attack.yml](attack.yml) using [Artillery](https://artillery.io/).
+Load testing report is in [./report.json.html](report.json.html)
+
+## Deployement
+The application is Dockerized. You can find the [Dockerfile](Dockerfile) and [docker-compose.yml](docker-compose.yml).
+
+## Swagger
+The swagger API should be available on ```http://hostname:port/api```, or you can browse it here: [http://159.203.2.190:3200/api/](http://159.203.2.190:3200/api/)
+
+Sample request: [http://159.203.2.190:3200/history?userId=32&from=2019-11-21&to=2021-11-21](http://159.203.2.190:3200/history?userId=32&from=2019-11-21&to=2021-11-21)
+
+There is not too much seed data at the moment, but I can easily add it on request.

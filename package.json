@@ -8,7 +8,7 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "jest && nest start",
+    "start": "nest start",
     "start:dev": "nodemon --config nodemon.json",
     "start:debug": "nest start --debug --watch",
     "start:prod": "jest && node dist/main",
