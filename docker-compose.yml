@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+  backend:
+    depends_on:
+      - "postgres"
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DATABASE: postgres
+
+volumes:
+  db_data:
