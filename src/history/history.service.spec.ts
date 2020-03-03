@@ -26,9 +26,9 @@ describe('HistoryService', () => {
 
 
         // wipes all tables
-        await TransactionEntity.destroy({truncate: true});
-        await UserEntity.destroy({cascade: true, truncate: true});
-        await MerchantEntity.destroy({cascade: true, truncate: true});
+        // await TransactionEntity.destroy({truncate: true});
+        // await UserEntity.destroy({cascade: true, truncate: true});
+        // await MerchantEntity.destroy({cascade: true, truncate: true});
 
 
         sampleMerchant = await MerchantEntity.create({['display_name']: 'Merchant 1'});
